@@ -23,7 +23,7 @@ namespace CyphersSupporterBot
             if (command == null)
                 return string.Empty;
 
-            return await commandExecutor.MakeResponse(command);
+            return await commandExecutor.Execute(command);
         }
     }
 }

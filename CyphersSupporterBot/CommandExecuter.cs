@@ -23,7 +23,7 @@ namespace CyphersSupporterBot
             };
         }
 
-        public async Task<string> MakeResponse(Command command)
+        public async Task<string> Execute(Command command)
         {
             return await ProcessResponse(command);
         }

@@ -29,7 +29,7 @@ namespace CyphersSupporterBot
             if (command is NameCommand nameCommand == false)
                 return;
 
-            string jsonData = await CyphersAPIManager.RequestData(URLType.GetPlayerData, nameCommand.name);
+            string jsonData = await CyphersAPI.RequestData(URLType.GetPlayerData, nameCommand.name);
             if (jsonData == null || jsonData == string.Empty)
                 return;
 
@@ -44,7 +44,7 @@ namespace CyphersSupporterBot
             if (data == null)
                 return;
 
-            jsonData = await CyphersAPIManager.RequestData(URLType.GetPlayerDetailData, data.playerId);
+            jsonData = await CyphersAPI.RequestData(URLType.GetPlayerDetailData, data.playerId);
             if (jsonData == null || jsonData == string.Empty)
                 return;
 

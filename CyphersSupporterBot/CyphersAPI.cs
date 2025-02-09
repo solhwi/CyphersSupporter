@@ -12,13 +12,13 @@ namespace CyphersSupporterBot
         GetPlayerData = 0,
         GetPlayerDetailData = 1,
         GetPlayerMatchingHistory,
-        GetMatchData,
+        GetPlayerMatchData,
         GetPlayerRankingData,
         GetCharacterRanking,
         GetAllCharacterData,
     }
 
-    internal class CyphersAPIManager
+    internal static class CyphersAPI
     {
         private static HttpClient client = new HttpClient();
 
@@ -55,6 +55,21 @@ namespace CyphersSupporterBot
 
                 case URLType.GetPlayerDetailData:
                     return new GetPlayerDetailDataCommand(commandParameters);
+
+                case URLType.GetPlayerMatchingHistory:
+                    return new GetPlayerMatchingHistoryCommand(commandParameters);
+
+                case URLType.GetPlayerMatchData:
+                    return new GetPlayerMatchDataCommand(commandParameters);
+
+                case URLType.GetPlayerRankingData:
+                    return new GetPlayerRankingDataCommand(commandParameters);
+
+                case URLType.GetCharacterRanking:
+                    return new GetCharacterRankingDataCommand(commandParameters);
+
+                case URLType.GetAllCharacterData:
+                    return new GetAllCharacterDataCommand(commandParameters);
             }
 
             return null;
