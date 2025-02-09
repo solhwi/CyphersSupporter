@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace CyphersSupporterBot
 {
-
-    internal class CyphersAPIPlayerData
+    internal class CyphersAPIData
     {
+
+    }
+
+	internal class CyphersAPIPlayerData : CyphersAPIData
+	{
         public class Row
         {
             public string playerId { get; set; }
@@ -26,8 +30,8 @@ namespace CyphersSupporterBot
         public Row[] rows { get; set; }
     }
 
-    public class CyphersAPIPlayerDetailData
-    {
+	internal class CyphersAPIPlayerDetailData : CyphersAPIData
+	{
         public class Represent
         {
             public string characterId { get; set; }
@@ -55,8 +59,8 @@ namespace CyphersSupporterBot
         public Record[] records { get; set; }
     }
 
-    public class CyphersAPIMatchingHistoryData
-    {
+	internal class CyphersAPIMatchingHistoryData : CyphersAPIData
+	{
         public string playerId { get; set; }
         public string nickname { get; set; }
         public int grade { get; set; }
@@ -173,8 +177,8 @@ namespace CyphersSupporterBot
         }
     }
 
-    public class CyphersAPIPlayerMatchData
-    {
+	internal class CyphersAPIPlayerMatchData : CyphersAPIData
+	{
         public string date { get; set; }
         public string gameTypeId { get; set; }
         public Map map { get; set; }
@@ -284,8 +288,8 @@ namespace CyphersSupporterBot
 
     }
 
-    public class CyphersAPIRankingData
-    {
+	internal class CyphersAPIRankingData : CyphersAPIData
+	{
         public Row[] rows { get; set; }
 
         public class Row
@@ -308,8 +312,8 @@ namespace CyphersSupporterBot
 
     }
 
-    public class CyphersAPICharacterRankingData
-    {
+	internal class CyphersAPICharacterRankingData : CyphersAPIData
+	{
         public Row[] rows { get; set; }
 
         public class Row
@@ -323,8 +327,8 @@ namespace CyphersSupporterBot
 
     }
 
-    public class CyphersAPICharacterData
-    {
+    internal class CyphersAPICharacterData : CyphersAPIData
+	{
         public Row[] rows { get; set; }
 
         public class Row
