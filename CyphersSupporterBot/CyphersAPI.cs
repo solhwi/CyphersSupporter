@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,27 @@ namespace CyphersSupporterBot
     internal static class CyphersAPI
     {
         private static HttpClient client = new HttpClient();
+        private static Dictionary<string, string> characterIdDictionary = new Dictionary<string, string>();
+    
+        public static async Task PreLoad()
+        {
+            string jsonData = await RequestData(URLType.GetAllCharacterData);
+            if (jsonData == null || jsonData == string.Empty)
+                return;
+
+            var characterData = JsonConvert.DeserializeObject<CyphersAPICharacterData>(jsonData);
+            if (characterData == null)
+                return;
+
+            if (characterData.rows == null)
+                return;
+
+            characterIdDictionary.Clear();
+            foreach (var row in characterData.rows)
+            {
+                characterIdDictionary.Add(row.characterName, row.characterId);
+            }
+        }
 
         public static async Task<string> Get(string url)
         {
