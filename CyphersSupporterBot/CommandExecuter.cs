@@ -1,0 +1,53 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CyphersSupporterBot
+{
+    /// <summary>
+	/// 입력받은 커맨드에 적절한 행동을 취하고 응답을 돌려줌
+	/// </summary>
+	internal class CommandExecutor
+    {
+        private Dictionary<CommandType, Func<Command, Task<Message>>> taskDictionary = null;
+
+        public CommandExecutor()
+        {
+            taskDictionary = new Dictionary<CommandType, Func<Command, Task<Message>>>
+            {
+                { CommandType.Tier, OnGetTier },
+            };
+        }
+
+        public async Task<string> MakeResponse(Command command)
+        {
+            return await ProcessResponse(command);
+        }
+
+        private async Task<string> ProcessResponse(Command command)
+        {
+            Message data = null;
+            if (taskDictionary.TryGetValue(command.commandType, out var doTask))
+            {
+                data = await doTask(command);
+            }
+
+            return data?.ReadMessage() ?? string.Empty;
+        }
+
+        private async Task<Message> OnGetTier(Command command)
+        {
+            if (command is NameCommand nameCommand == false)
+                return null;
+
+            var responseData = new TierMessage();
+            await responseData.MakeMessage(nameCommand);
+
+            return responseData;
+        }
+    }
+}
