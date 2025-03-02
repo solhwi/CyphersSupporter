@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CyphersSupporterBot
 {
-    public enum APIType
+    public enum URLType
     {
         None = -1,
         GetPlayerData = 0,
@@ -26,7 +26,7 @@ namespace CyphersSupporterBot
     
         public static async Task PreLoad()
         {
-            var characterData = await RequestData<CyphersAPICharacterData>(APIType.GetAllCharacterData);
+            var characterData = await RequestData<CyphersAPICharacterData>(URLType.GetAllCharacterData);
 			if (characterData == null)
                 return;
 
@@ -55,7 +55,7 @@ namespace CyphersSupporterBot
             }
         }
 
-        public static async Task<T> RequestData<T>(APIType urlType, params string[] parameters) where T : CyphersAPIData
+        public static async Task<T> RequestData<T>(URLType urlType, params string[] parameters) where T : CyphersAPIData
 		{
 			string jsonData = await RequestData(urlType, parameters);
 			if (jsonData == null || jsonData == string.Empty)
@@ -65,7 +65,7 @@ namespace CyphersSupporterBot
 		}
 
 
-		public static async Task<string> RequestData(APIType urlType, params string[] parameters)
+		public static async Task<string> RequestData(URLType urlType, params string[] parameters)
         {
             var command = MakeCommand(urlType, parameters);
             if (command == null)
@@ -74,29 +74,29 @@ namespace CyphersSupporterBot
             return await command.Execute();
         }
 
-        private static CyphersAPICommand MakeCommand(APIType urlType, IEnumerable<string> commandParameters)
+        private static CyphersAPICommand MakeCommand(URLType urlType, IEnumerable<string> commandParameters)
         {
             switch (urlType)
             {
-                case APIType.GetPlayerData:
+                case URLType.GetPlayerData:
                     return new GetPlayerDataCommand(commandParameters);
 
-                case APIType.GetPlayerDetailData:
+                case URLType.GetPlayerDetailData:
                     return new GetPlayerDetailDataCommand(commandParameters);
 
-                case APIType.GetPlayerMatchingHistory:
+                case URLType.GetPlayerMatchingHistory:
                     return new GetPlayerMatchingHistoryCommand(commandParameters);
 
-                case APIType.GetPlayerMatchData:
+                case URLType.GetPlayerMatchData:
                     return new GetPlayerMatchDataCommand(commandParameters);
 
-                case APIType.GetPlayerRankingData:
+                case URLType.GetPlayerRankingData:
                     return new GetPlayerRankingDataCommand(commandParameters);
 
-                case APIType.GetCharacterRanking:
+                case URLType.GetCharacterRanking:
                     return new GetCharacterRankingDataCommand(commandParameters);
 
-                case APIType.GetAllCharacterData:
+                case URLType.GetAllCharacterData:
                     return new GetAllCharacterDataCommand(commandParameters);
             }
 

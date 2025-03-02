@@ -30,7 +30,11 @@ namespace CyphersSupporterBot
             if (command is NameCommand nameCommand == false)
                 return;
 
-            var playerData = await CyphersAPI.RequestData<CyphersAPIPlayerData>(APIType.GetPlayerData, nameCommand.name);
+            string jsonData = await CyphersAPI.RequestData(URLType.GetPlayerData, nameCommand.name);
+            if (jsonData == null || jsonData == string.Empty)
+                return;
+
+            var playerData = JsonConvert.DeserializeObject<CyphersAPIPlayerData>(jsonData);
             if (playerData == null)
                 return;
 
@@ -41,8 +45,12 @@ namespace CyphersSupporterBot
             if (data == null)
                 return;
 
-            var playerDetailData = await CyphersAPI.RequestData<CyphersAPIPlayerDetailData>(APIType.GetPlayerDetailData, data.playerId);
-			if (playerDetailData == null)
+            jsonData = await CyphersAPI.RequestData(URLType.GetPlayerDetailData, data.playerId);
+            if (jsonData == null || jsonData == string.Empty)
+                return;
+
+            var playerDetailData = JsonConvert.DeserializeObject<CyphersAPIPlayerDetailData>(jsonData);
+            if (playerDetailData == null)
                 return;
 
             userName = playerDetailData.nickname;
@@ -165,7 +173,75 @@ namespace CyphersSupporterBot
 
     internal class CharacterHistoryMessage : Message
     {
-        
+        private class BattlePlayerInfo
+        {
+            public readonly string matchType = string.Empty;
+            public readonly bool isRating = false;
+            public readonly string characterName = string.Empty;
+            public readonly string resultType = string.Empty;
+            public readonly int killPoint = 0;
+            public readonly int deathPoint = 0;
+            public readonly int assigtPoint = 0;
+
+            public BattlePlayerInfo(CyphersAPIMatchingHistoryData.Playinfo playInfo, string gameTypeId)
+            {
+                this.matchType = gameTypeId == "rating" ? "공식" : "일반";
+                this.isRating = gameTypeId == "rating";
+                this.characterName = playInfo.characterName;
+                this.resultType = playInfo.result == "win" ? "승" : "패";
+                this.killPoint = playInfo.killCount;
+                this.deathPoint = playInfo.deathCount;
+                this.assigtPoint = playInfo.assistCount;
+            }
+        }
+
+        public string userName = string.Empty;
+        private const int battleHistoryCount = 10;
+        private List<BattlePlayerInfo> playerInfoList = new List<BattlePlayerInfo>();
+
+        internal override async Task MakeMessage(Command command)
+        {
+            if (command is RatingAndNameCommand rnCommand == false)
+                return;
+
+            string jsonData = await CyphersAPI.RequestData(URLType.GetPlayerData, rnCommand.name);
+            if (jsonData == null || jsonData == string.Empty)
+                return;
+
+            var playerData = JsonConvert.DeserializeObject<CyphersAPIPlayerData>(jsonData);
+            if (playerData == null)
+                return;
+
+            if (playerData.rows == null || playerData.rows.Length < 1)
+                return;
+
+            var data = playerData.rows[0];
+            if (data == null)
+                return;
+
+            jsonData = await CyphersAPI.RequestData(URLType.GetPlayerMatchingHistory, data.playerId, rnCommand.GetRatingString(), battleHistoryCount.ToString());
+            if (jsonData == null || jsonData == string.Empty)
+                return;
+
+            var matchingHistoryData = JsonConvert.DeserializeObject<CyphersAPIMatchingHistoryData>(jsonData);
+            if (matchingHistoryData == null)
+                return;
+
+            if (matchingHistoryData.matches.rows == null || matchingHistoryData.matches.rows.Length < 1)
+                return;
+
+            var histories = matchingHistoryData.matches.rows.Take(battleHistoryCount);
+            if (histories == null)
+                return;
+
+            userName = rnCommand.name;
+            foreach (var history in histories)
+            {
+                var info = new BattlePlayerInfo(history.playInfo, rnCommand.GetRatingString());
+                playerInfoList.Add(info);
+            }
+        }
+
 
         internal override string ReadMessage()
         {
