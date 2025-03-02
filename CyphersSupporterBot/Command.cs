@@ -10,6 +10,15 @@ namespace CyphersSupporterBot
     {
         None = -1,
         Tier = 0,
+        RatingBattleHistory = 1,
+        NormalBattleHistory = 2,
+        CharacterHistory = 3,
+        Party = 4,
+        RandomCharacter = 5,
+        RandomCharacterByPosition = 6,
+        Information = 7,
+        CharacterBGM = 8,
+        JazzBGM = 9,
     }
 
     public class Command
@@ -29,6 +38,23 @@ namespace CyphersSupporterBot
         public NameCommand(CommandType commandType, string name) : base(commandType)
         {
             this.name = name;
+        }
+    }
+
+    public class RatingAndNameCommand : Command
+    {
+        public readonly string name = string.Empty;
+        public readonly bool isRating = false;
+
+        public RatingAndNameCommand(CommandType commandType, string name, bool isRating) : base(commandType)
+        {
+            this.name = name;
+            this.isRating = isRating;
+        }
+
+        public string GetRatingString()
+        {
+            return isRating ? "rating" : "normal";
         }
     }
 }

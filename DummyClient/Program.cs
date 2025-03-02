@@ -7,13 +7,8 @@
 
         private static List<string> testCaseList = new List<string>()
         {
-            "/Cy?p1=그님티&p2=냉정침착빵훈맨",
-            "/Cy?p1=그님티&p2=믽지",
             "/Cy?p1=그님티&p2=뭅",
-            "/Cy?p1=그님티&p2=소리쿤",
-            "/Cy?p1=그님티&p2=장뚱어",
-            "/Cy?p1=그님티&p2=시흥공기달다",
-            "/Cy?p1=그님티&p2=루스77",
+            "/Cy?p1=전적&p2=뭅"
         };
 
         public static async Task Main(string[] args)

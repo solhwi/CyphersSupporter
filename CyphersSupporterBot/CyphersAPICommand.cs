@@ -37,7 +37,7 @@ namespace CyphersSupporterBot
                     additionalURL = string.Format(GetAdditionalURL, commandParameters[0], commandParameters[1], commandParameters[2], commandParameters[3]);
                 }
 
-                return CyphersAPIServerBaseURL + additionalURL;
+                return CyphersAPIServerBaseURL + additionalURL + APIKey;
             }
         }
 
@@ -62,7 +62,7 @@ namespace CyphersSupporterBot
     /// </summary>
     internal class GetPlayerDataCommand : CyphersAPICommand
     {
-        protected override string GetAdditionalURL => "players?nickname={0}&wordType=match&apikey=" + APIKey;
+        protected override string GetAdditionalURL => "players?nickname={0}&wordType=match&apikey=";
 
         public GetPlayerDataCommand(IEnumerable<string> commandParameters) : base(commandParameters) 
         { 
@@ -75,7 +75,7 @@ namespace CyphersSupporterBot
     /// </summary>
     internal class GetPlayerDetailDataCommand : CyphersAPICommand
     {
-        protected override string GetAdditionalURL => "players/{0}?apikey=" + APIKey;
+        protected override string GetAdditionalURL => "players/{0}?apikey=";
 
         public GetPlayerDetailDataCommand(IEnumerable<string> commandParameters) : base(commandParameters)
         {
@@ -85,8 +85,8 @@ namespace CyphersSupporterBot
 
     /// <summary>
     /// 0. playerId
-    /// 1. 시작일 (20231212 등으로 입력)
-    /// 2. 종료일
+    /// 1. 공식 / 일반
+    /// 2. 갯수
     /// </summary>
     internal class GetPlayerMatchingHistoryCommand : CyphersAPICommand
     {
@@ -98,7 +98,7 @@ namespace CyphersSupporterBot
         {
             get
             {
-                return "players/{0}/matches?gameTypeId=rating&startDate={1}&endDate={2}&limit=<limit>&next=<next>&apikey=";
+                return "players/{0}/matches?gameTypeId={1}&limit={2}&apikey=";
             }
         }
     }

@@ -11,7 +11,7 @@ namespace CyphersSupporterBot
 {
     /// <summary>
     /// 입력받은 http request에 맞는 커맨드를 생성해냄
-    /// ex. http://localhost:8000/Kaluha?p1=완료&p2=유진
+    /// ex. http://localhost:8000?p1=그님티&p2=소리쿤
     /// </summary>
     internal class CommandFactory
     {
@@ -36,9 +36,28 @@ namespace CyphersSupporterBot
                     if (commandParameters.Length < 2)
                         return null;
 
-                    string name = commandParameters[1];
+                    return new NameCommand(commandType, commandParameters[1]);
 
-                    return new NameCommand(commandType, name);
+                case CommandType.RatingBattleHistory:
+
+                    if (commandParameters.Length < 2)
+                        return null;
+
+                    return new RatingAndNameCommand(commandType, commandParameters[1], true);
+
+                case CommandType.NormalBattleHistory:
+
+                    if (commandParameters.Length < 2)
+                        return null;
+
+                    return new RatingAndNameCommand(commandType, commandParameters[1], false);
+
+                case CommandType.CharacterHistory:
+
+                    if (commandParameters.Length < 2)
+                        return null;
+
+                    return new NameCommand(commandType, commandParameters[1]);
             }
 
             return null;
@@ -51,6 +70,10 @@ namespace CyphersSupporterBot
                 case "그님티":
                 case "티어":
                     return CommandType.Tier;
+
+                case "전적":
+                case "전적검색":
+                    return CommandType.RatingBattleHistory;
             }
 
             return CommandType.None;

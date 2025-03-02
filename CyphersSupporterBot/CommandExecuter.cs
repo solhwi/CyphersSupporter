@@ -20,6 +20,9 @@ namespace CyphersSupporterBot
             taskDictionary = new Dictionary<CommandType, Func<Command, Task<Message>>>
             {
                 { CommandType.Tier, OnGetTier },
+                { CommandType.RatingBattleHistory, OnGetBattleHistory },
+                { CommandType.NormalBattleHistory, OnGetBattleHistory },
+                { CommandType.CharacterHistory, OnGetCharacterHistory },
             };
         }
 
@@ -46,6 +49,28 @@ namespace CyphersSupporterBot
 
             var responseData = new TierMessage();
             await responseData.MakeMessage(nameCommand);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetBattleHistory(Command command)
+        {
+            if (command is RatingAndNameCommand rnCommand == false)
+                return null;
+
+            var responseData = new BattleHistoryMessage();
+            await responseData.MakeMessage(rnCommand);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetCharacterHistory(Command command)
+        {
+            if (command is NameCommand rnCommand == false)
+                return null;
+
+            var responseData = new CharacterHistoryMessage();
+            await responseData.MakeMessage(rnCommand);
 
             return responseData;
         }
