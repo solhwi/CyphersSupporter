@@ -57,7 +57,7 @@ namespace CyphersSupporterBot
                     if (commandParameters.Length < 2)
                         return null;
 
-                    return new NameCommand(commandType, commandParameters[1]);
+                    return new RatingAndNameCommand(commandType, commandParameters[1], true);
             }
 
             return null;
@@ -71,9 +71,17 @@ namespace CyphersSupporterBot
                 case "티어":
                     return CommandType.Tier;
 
-                case "전적":
-                case "전적검색":
+                case "공식전적":
+                case "공식전적검색":
                     return CommandType.RatingBattleHistory;
+
+                case "일반전적":
+                case "일반전적검색":
+                    return CommandType.NormalBattleHistory;
+
+                case "캐릭터":
+                case "캐릭터통계":
+                    return CommandType.CharacterHistory;
             }
 
             return CommandType.None;

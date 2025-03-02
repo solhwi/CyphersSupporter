@@ -66,7 +66,7 @@ namespace CyphersSupporterBot
 
         private async Task<Message> OnGetCharacterHistory(Command command)
         {
-            if (command is NameCommand rnCommand == false)
+            if (command is RatingAndNameCommand rnCommand == false)
                 return null;
 
             var responseData = new CharacterHistoryMessage();

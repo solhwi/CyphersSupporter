@@ -127,7 +127,10 @@ namespace CyphersSupporterBot
             if (data == null)
                 return;
 
-            jsonData = await CyphersAPI.RequestData(URLType.GetPlayerMatchingHistory, data.playerId, rnCommand.GetRatingString(), battleHistoryCount.ToString());
+            DateTime endTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0).AddDays(0);
+            DateTime startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0).AddDays(-89);
+
+            jsonData = await CyphersAPI.RequestData(URLType.GetPlayerMatchingHistory, data.playerId, rnCommand.GetRatingString(), startTime.ToString("yyyyMMddTHHmm"), endTime.ToString("yyyyMMddTHHmm"), battleHistoryCount.ToString());
             if (jsonData == null || jsonData == string.Empty)
                 return;
 
@@ -173,31 +176,21 @@ namespace CyphersSupporterBot
 
     internal class CharacterHistoryMessage : Message
     {
-        private class BattlePlayerInfo
+        private class BattleInfo
         {
-            public readonly string matchType = string.Empty;
-            public readonly bool isRating = false;
             public readonly string characterName = string.Empty;
-            public readonly string resultType = string.Empty;
-            public readonly int killPoint = 0;
-            public readonly int deathPoint = 0;
-            public readonly int assigtPoint = 0;
+            public readonly int playCount = 0;
 
-            public BattlePlayerInfo(CyphersAPIMatchingHistoryData.Playinfo playInfo, string gameTypeId)
+            public BattleInfo(string characterName, int playCount)
             {
-                this.matchType = gameTypeId == "rating" ? "공식" : "일반";
-                this.isRating = gameTypeId == "rating";
-                this.characterName = playInfo.characterName;
-                this.resultType = playInfo.result == "win" ? "승" : "패";
-                this.killPoint = playInfo.killCount;
-                this.deathPoint = playInfo.deathCount;
-                this.assigtPoint = playInfo.assistCount;
+                this.characterName = characterName;
+                this.playCount = playCount;
             }
         }
 
         public string userName = string.Empty;
-        private const int battleHistoryCount = 10;
-        private List<BattlePlayerInfo> playerInfoList = new List<BattlePlayerInfo>();
+        private const int characterCount = 5;
+        private Dictionary<string, int> characterInfoDictionary = new Dictionary<string, int>();
 
         internal override async Task MakeMessage(Command command)
         {
@@ -219,26 +212,44 @@ namespace CyphersSupporterBot
             if (data == null)
                 return;
 
-            jsonData = await CyphersAPI.RequestData(URLType.GetPlayerMatchingHistory, data.playerId, rnCommand.GetRatingString(), battleHistoryCount.ToString());
-            if (jsonData == null || jsonData == string.Empty)
-                return;
-
-            var matchingHistoryData = JsonConvert.DeserializeObject<CyphersAPIMatchingHistoryData>(jsonData);
-            if (matchingHistoryData == null)
-                return;
-
-            if (matchingHistoryData.matches.rows == null || matchingHistoryData.matches.rows.Length < 1)
-                return;
-
-            var histories = matchingHistoryData.matches.rows.Take(battleHistoryCount);
-            if (histories == null)
-                return;
-
             userName = rnCommand.name;
-            foreach (var history in histories)
+
+            // 최대 300일로 보정
+            // 3일에 100판을 한다고 가정
+            for(int i = 0; i < 80; i++)
             {
-                var info = new BattlePlayerInfo(history.playInfo, rnCommand.GetRatingString());
-                playerInfoList.Add(info);
+                int offsetDay = i * -3;
+
+                DateTime endTime = DateTime.Now.AddDays(offsetDay);
+                DateTime startTime = DateTime.Now.AddDays(offsetDay - 3);
+
+                jsonData = await CyphersAPI.RequestData(URLType.GetPlayerMatchingHistory, data.playerId, rnCommand.GetRatingString(), startTime.ToString("yyyyMMddTHHmm"), endTime.ToString("yyyyMMddTHHmm"), 1000.ToString());
+                if (jsonData == null || jsonData == string.Empty)
+                    continue;
+
+                var matchingHistoryData = JsonConvert.DeserializeObject<CyphersAPIMatchingHistoryData>(jsonData);
+                if (matchingHistoryData == null)
+                    continue;
+
+                if (matchingHistoryData.matches.rows == null || matchingHistoryData.matches.rows.Length < 1)
+                    continue;
+
+                var histories = matchingHistoryData.matches.rows;
+                if (histories == null)
+                    continue;
+
+                foreach (var history in histories)
+                {
+                    string id = history.playInfo.characterId;
+                    if (characterInfoDictionary.ContainsKey(id))
+                    {
+                        characterInfoDictionary[id]++;
+                    }
+                    else
+                    {
+                        characterInfoDictionary[id] = 1;
+                    }
+                }
             }
         }
 
@@ -246,6 +257,22 @@ namespace CyphersSupporterBot
         internal override string ReadMessage()
         {
             StringBuilder sb = new StringBuilder();
+            sb.Append($">> {userName}의 캐릭터 통계 <<\n");
+
+            for(int i = 0; i < characterCount; i++)
+            {
+                if (characterInfoDictionary.Count == 0)
+                    break;
+
+                var pair = characterInfoDictionary.MaxBy(pair => pair.Value);
+
+                if (CyphersAPI.characterNameDictionary.TryGetValue(pair.Key, out var characterName))
+                {
+                    sb.Append($">> {i + 1}. {characterName} {pair.Value}판 <<\n");
+                }
+
+                characterInfoDictionary.Remove(pair.Key);
+            }
 
             return sb.ToString();
         }

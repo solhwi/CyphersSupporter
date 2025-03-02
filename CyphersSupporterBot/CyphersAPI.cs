@@ -22,8 +22,9 @@ namespace CyphersSupporterBot
     internal static class CyphersAPI
     {
         private static HttpClient client = new HttpClient();
-        private static Dictionary<string, string> characterIdDictionary = new Dictionary<string, string>();
-    
+        public static Dictionary<string, string> characterIdDictionary = new Dictionary<string, string>();
+        public static Dictionary<string, string> characterNameDictionary = new Dictionary<string, string>();
+
         public static async Task PreLoad()
         {
             var characterData = await RequestData<CyphersAPICharacterData>(URLType.GetAllCharacterData);
@@ -34,9 +35,11 @@ namespace CyphersSupporterBot
                 return;
 
             characterIdDictionary.Clear();
+            characterNameDictionary.Clear();
             foreach (var row in characterData.rows)
             {
                 characterIdDictionary.Add(row.characterName, row.characterId);
+                characterNameDictionary.Add(row.characterId, row.characterName);
             }
         }
 

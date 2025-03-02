@@ -36,6 +36,10 @@ namespace CyphersSupporterBot
                 {
                     additionalURL = string.Format(GetAdditionalURL, commandParameters[0], commandParameters[1], commandParameters[2], commandParameters[3]);
                 }
+                else if (commandParameters.Count == 5)
+                {
+                    additionalURL = string.Format(GetAdditionalURL, commandParameters[0], commandParameters[1], commandParameters[2], commandParameters[3], commandParameters[4]);
+                }
 
                 return CyphersAPIServerBaseURL + additionalURL + APIKey;
             }
@@ -86,7 +90,9 @@ namespace CyphersSupporterBot
     /// <summary>
     /// 0. playerId
     /// 1. 공식 / 일반
-    /// 2. 갯수
+    /// 2. 20211220
+    /// 3. 20221120
+    /// 4. 갯수
     /// </summary>
     internal class GetPlayerMatchingHistoryCommand : CyphersAPICommand
     {
@@ -98,7 +104,7 @@ namespace CyphersSupporterBot
         {
             get
             {
-                return "players/{0}/matches?gameTypeId={1}&limit={2}&apikey=";
+                return "players/{0}/matches?gameTypeId={1}&startDate={2}&endDate={3}&limit={4}&apikey=";
             }
         }
     }
