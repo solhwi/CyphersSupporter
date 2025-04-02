@@ -94,7 +94,7 @@ namespace CyphersSupporterBot
 
         private static Dictionary<string, string> MakeCharacterBGMLinkDictionary()
         {
-            string filePath = $"{Config.ScriptRootPath}/characterBGMLink.csv";
+            string filePath = $"{Config.ScriptRootPath}/CharacterBGMLink.csv";
             string rawText = File.ReadAllText(filePath);
 
             var sheetList = CSVReader.Read(rawText);
@@ -116,7 +116,7 @@ namespace CyphersSupporterBot
 
         private static List<string> MakeJazzBGMLinkList()
         {
-            string filePath = $"{Config.ScriptRootPath}/jazzBGMLink.csv";
+            string filePath = $"{Config.ScriptRootPath}/JazzBGMLink.csv";
             string rawText = File.ReadAllText(filePath);
 
             var sheetList = CSVReader.Read(rawText);

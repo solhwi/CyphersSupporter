@@ -83,11 +83,11 @@ namespace CyphersSupporterBot
 
         private async Task<Message> OnGetParty(Command command)
         {
-            if (command is NameCommand rnCommand == false)
+            if (command is NameCommand nameCommand == false)
                 return null;
 
             var responseData = new PartyMessage();
-            await responseData.MakeMessage(rnCommand);
+            await responseData.MakeMessage(nameCommand);
 
             return responseData;
         }
@@ -102,11 +102,11 @@ namespace CyphersSupporterBot
 
         private async Task<Message> OnGetRandomCharacterByPosition(Command command)
         {
-            if (command is NameCommand rnCommand == false)
+            if (command is NameCommand nameCommand == false)
                 return null;
 
             var responseData = new RandomCharacterByPositionMessage();
-            await responseData.MakeMessage(rnCommand);
+            await responseData.MakeMessage(nameCommand);
 
             return responseData;
         }
@@ -121,11 +121,11 @@ namespace CyphersSupporterBot
 
         private async Task<Message> OnGetCharacterBGM(Command command)
         {
-            if (command is NameCommand rnCommand == false)
+            if (command is NameCommand nameCommand == false)
                 return null;
 
             var responseData = new CharacterBGMMessage();
-            await responseData.MakeMessage(rnCommand);
+            await responseData.MakeMessage(nameCommand);
 
             return responseData;
         }

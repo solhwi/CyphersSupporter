@@ -326,7 +326,12 @@ namespace CyphersSupporterBot
                 name = LocalDataManager.GetRandomCharacterNameByPosition(positionName);
             }
 
-            return $">> {name} <<";
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append($"사이퍼즈 {positionName} 룰렛\n");
+            sb.Append($">> {name} <<");
+
+            return sb.ToString();
         }
     }
 
@@ -335,7 +340,13 @@ namespace CyphersSupporterBot
         internal override string ReadMessage()
         {
             var text = LocalDataManager.GetRandomInformationText();
-            return $">> {text} <<";
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append($">> 사이퍼즈 한 줄 지식 <<\n");
+            sb.Append($"{text}");
+
+            return sb.ToString();
         }
     }
 
