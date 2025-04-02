@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CyphersSupporterBot
 {
@@ -295,27 +296,37 @@ namespace CyphersSupporterBot
     {
         internal override string ReadMessage()
         {
-            // 1. 모든 캐릭터 리스트를 받음
-            // 2. 랜덤하게 출력
-        }
-
-        internal override async Task MakeMessage(Command command)
-        {
-
+            var name = LocalDataManager.GetRandomCharacterName();
+            return $">> {name} <<";
         }
     }
 
     internal class RandomCharacterByPositionMessage : Message
     {
-        internal override string ReadMessage()
-        {
-            // 1. 포지션 : 캐릭터 리스트가 적힌 json 데이터를 읽는다.
-            // 2. 랜덤으로 출력
-        }
+        private string positionName = string.Empty;
 
         internal override async Task MakeMessage(Command command)
         {
+            if (command is NameCommand nameCommand)
+            {
+                positionName = nameCommand.name;
+            }
+        }
 
+        internal override string ReadMessage()
+        {
+            string name = string.Empty;
+
+            if (positionName == string.Empty)
+            {
+                name = LocalDataManager.GetRandomCharacterName();
+            }
+            else
+            {
+                name = LocalDataManager.GetRandomCharacterNameByPosition(positionName);
+            }
+
+            return $">> {name} <<";
         }
     }
 
@@ -323,26 +334,37 @@ namespace CyphersSupporterBot
     {
         internal override string ReadMessage()
         {
-            // 1. json 데이터를 읽는다.
-            // 2. 출력
-        }
-
-        internal override async Task MakeMessage(Command command)
-        {
-
+            var text = LocalDataManager.GetRandomInformationText();
+            return $">> {text} <<";
         }
     }
 
     internal class CharacterBGMMessage : Message
     {
-        internal override string ReadMessage()
-        {
-            throw new NotImplementedException();
-        }
+        private string characterName = string.Empty;
 
         internal override async Task MakeMessage(Command command)
         {
+            if (command is NameCommand nameCommand)
+            {
+                characterName = nameCommand.name;
+            }
+        }
 
+        internal override string ReadMessage()
+        {
+            string url = string.Empty;
+
+            if (characterName != string.Empty)
+            {
+                url = LocalDataManager.GetCharacterBGM(characterName);
+            }
+            else
+            {
+                url = LocalDataManager.GetRandomCharacterBGM();
+            }
+
+            return $"{url}";
         }
     }
 
@@ -350,12 +372,8 @@ namespace CyphersSupporterBot
     {
         internal override string ReadMessage()
         {
-            throw new NotImplementedException();
-        }
-
-        internal override async Task MakeMessage(Command command)
-        {
-
+            var url = LocalDataManager.GetRandomJazzBGM();
+            return $"{url}";
         }
     }
 }
