@@ -31,14 +31,8 @@ namespace CyphersSupporterBot
 
             switch (commandType)
             {
-                case CommandType.Tier:
-
-                    if (commandParameters.Length < 2)
-                        return null;
-
-                    return new NameCommand(commandType, commandParameters[1]);
-
                 case CommandType.RatingBattleHistory:
+                case CommandType.CharacterHistory:
 
                     if (commandParameters.Length < 2)
                         return null;
@@ -52,21 +46,23 @@ namespace CyphersSupporterBot
 
                     return new RatingAndNameCommand(commandType, commandParameters[1], false);
 
-                case CommandType.CharacterHistory:
-
-                    if (commandParameters.Length < 2)
-                        return null;
-
-                    return new RatingAndNameCommand(commandType, commandParameters[1], true);
-
                 case CommandType.Party:
+                case CommandType.Tier:
+                case CommandType.RandomCharacterByPosition:
+                case CommandType.CharacterBGM:
 
                     if (commandParameters.Length < 2)
                         return null;
 
                     return new NameCommand(commandType, commandParameters[1]);
+
+                case CommandType.RandomCharacter:
+                case CommandType.Information:
+                case CommandType.JazzBGM:
+                    return new Command(commandType);
             }
 
+            Console.WriteLine("정의되지 않은 Command 만들기를 시도합니다.");
             return null;
         }
 
@@ -89,6 +85,28 @@ namespace CyphersSupporterBot
                 case "캐릭터":
                 case "캐릭터통계":
                     return CommandType.CharacterHistory;
+
+                case "파티":
+                case "친구":
+                    return CommandType.Party;
+
+                case "랜덤":
+                    return CommandType.RandomCharacter;
+
+                case "포지션랜덤":
+                    return CommandType.RandomCharacterByPosition;
+
+                case "한줄지식":
+                    return CommandType.Information;
+
+                case "재즈":
+                case "재즈BGM":
+                case "재즈브금":
+                    return CommandType.JazzBGM;
+
+                case "캐릭터BGM":
+                case "캐릭터브금":
+                    return CommandType.CharacterBGM;
             }
 
             return CommandType.None;

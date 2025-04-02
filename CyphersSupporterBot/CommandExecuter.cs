@@ -23,7 +23,12 @@ namespace CyphersSupporterBot
                 { CommandType.RatingBattleHistory, OnGetBattleHistory },
                 { CommandType.NormalBattleHistory, OnGetBattleHistory },
                 { CommandType.CharacterHistory, OnGetCharacterHistory },
-                { CommandType.Party, OnGetParty }
+                { CommandType.Party, OnGetParty },
+                { CommandType.RandomCharacter, OnGetRandomCharacter },
+                { CommandType.RandomCharacterByPosition, OnGetRandomCharacterByPosition },
+                { CommandType.Information, OnGetInformation },
+                { CommandType.CharacterBGM, OnGetCharacterBGM },
+                { CommandType.JazzBGM, OnGetJazzBGM },
             };
         }
 
@@ -86,5 +91,52 @@ namespace CyphersSupporterBot
 
             return responseData;
         }
+
+        private async Task<Message> OnGetRandomCharacter(Command command)
+        {
+            var responseData = new RandomCharacterMessage();
+            await responseData.MakeMessage(command);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetRandomCharacterByPosition(Command command)
+        {
+            if (command is NameCommand rnCommand == false)
+                return null;
+
+            var responseData = new RandomCharacterByPositionMessage();
+            await responseData.MakeMessage(rnCommand);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetInformation(Command command)
+        {
+            var responseData = new InformationMessage();
+            await responseData.MakeMessage(command);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetCharacterBGM(Command command)
+        {
+            if (command is NameCommand rnCommand == false)
+                return null;
+
+            var responseData = new CharacterBGMMessage();
+            await responseData.MakeMessage(command);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetJazzBGM(Command command)
+        {
+            var responseData = new JazzBGMMessage();
+            await responseData.MakeMessage(command);
+
+            return responseData;
+        }
+
     }
 }

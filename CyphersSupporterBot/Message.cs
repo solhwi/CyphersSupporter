@@ -290,4 +290,69 @@ namespace CyphersSupporterBot
         
         }
     }
+
+    internal class RandomCharacterMessage : Message
+    {
+        internal override string ReadMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override async Task MakeMessage(Command command)
+        {
+
+        }
+    }
+
+    internal class RandomCharacterByPositionMessage : Message
+    {
+        internal override string ReadMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override async Task MakeMessage(Command command)
+        {
+
+        }
+    }
+
+    internal class InformationMessage : Message
+    {
+        internal override string ReadMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override async Task MakeMessage(Command command)
+        {
+
+        }
+    }
+
+    internal class CharacterBGMMessage : Message
+    {
+        internal override string ReadMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override async Task MakeMessage(Command command)
+        {
+
+        }
+    }
+
+    internal class JazzBGMMessage : Message
+    {
+        internal override string ReadMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override async Task MakeMessage(Command command)
+        {
+
+        }
+    }
 }
