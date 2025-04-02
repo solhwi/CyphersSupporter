@@ -277,4 +277,17 @@ namespace CyphersSupporterBot
             return sb.ToString();
         }
     }
+
+    internal class PartyMessage : Message
+    {
+        internal override string ReadMessage()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override async Task MakeMessage(Command command)
+        { 
+        
+        }
+    }
 }

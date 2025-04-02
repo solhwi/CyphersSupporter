@@ -58,6 +58,13 @@ namespace CyphersSupporterBot
                         return null;
 
                     return new RatingAndNameCommand(commandType, commandParameters[1], true);
+
+                case CommandType.Party:
+
+                    if (commandParameters.Length < 2)
+                        return null;
+
+                    return new NameCommand(commandType, commandParameters[1]);
             }
 
             return null;

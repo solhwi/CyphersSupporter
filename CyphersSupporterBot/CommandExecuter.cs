@@ -23,6 +23,7 @@ namespace CyphersSupporterBot
                 { CommandType.RatingBattleHistory, OnGetBattleHistory },
                 { CommandType.NormalBattleHistory, OnGetBattleHistory },
                 { CommandType.CharacterHistory, OnGetCharacterHistory },
+                { CommandType.Party, OnGetParty }
             };
         }
 
@@ -70,6 +71,17 @@ namespace CyphersSupporterBot
                 return null;
 
             var responseData = new CharacterHistoryMessage();
+            await responseData.MakeMessage(rnCommand);
+
+            return responseData;
+        }
+
+        private async Task<Message> OnGetParty(Command command)
+        {
+            if (command is NameCommand rnCommand == false)
+                return null;
+
+            var responseData = new PartyMessage();
             await responseData.MakeMessage(rnCommand);
 
             return responseData;
