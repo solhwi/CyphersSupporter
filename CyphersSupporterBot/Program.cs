@@ -9,6 +9,7 @@
         private static async Task Main(string[] args)
         {
             await CyphersAPI.PreLoad();
+            LocalDataManager.PreLoad();
 
             messengerListener = new MessengerListener(MessengerServerPort);
             messengerListener.Start();

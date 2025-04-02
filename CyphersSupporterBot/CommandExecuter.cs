@@ -125,7 +125,7 @@ namespace CyphersSupporterBot
                 return null;
 
             var responseData = new CharacterBGMMessage();
-            await responseData.MakeMessage(command);
+            await responseData.MakeMessage(rnCommand);
 
             return responseData;
         }

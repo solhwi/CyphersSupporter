@@ -295,7 +295,8 @@ namespace CyphersSupporterBot
     {
         internal override string ReadMessage()
         {
-            throw new NotImplementedException();
+            // 1. 모든 캐릭터 리스트를 받음
+            // 2. 랜덤하게 출력
         }
 
         internal override async Task MakeMessage(Command command)
@@ -308,7 +309,8 @@ namespace CyphersSupporterBot
     {
         internal override string ReadMessage()
         {
-            throw new NotImplementedException();
+            // 1. 포지션 : 캐릭터 리스트가 적힌 json 데이터를 읽는다.
+            // 2. 랜덤으로 출력
         }
 
         internal override async Task MakeMessage(Command command)
@@ -321,7 +323,8 @@ namespace CyphersSupporterBot
     {
         internal override string ReadMessage()
         {
-            throw new NotImplementedException();
+            // 1. json 데이터를 읽는다.
+            // 2. 출력
         }
 
         internal override async Task MakeMessage(Command command)
