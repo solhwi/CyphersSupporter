@@ -67,8 +67,8 @@ namespace CyphersSupporterBot
         public bool tierTest { get; set; }
         public Represent represent { get; set; }
         public string clanName { get; set; }
-        public int ratingPoint { get; set; }
-        public int maxRatingPoint { get; set; }
+        public int? ratingPoint { get; set; }
+        public int? maxRatingPoint { get; set; }
         public string tierName { get; set; }
         public Record[] records { get; set; }
         public Matches matches { get; set; }
